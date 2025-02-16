@@ -75,7 +75,9 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $report = $this->reportRepository->getReportById($id);
+
+        return view('pages.admin.report.show', compact('report'));
     }
 
     /**
@@ -114,6 +116,10 @@ class ReportController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->reportRepository->deleteReport($id);
+
+        Swal::toast('Data Laporan Berhasil Dihapus', 'success')->timerProgressBar();
+
+        return redirect()->route('admin.report.index');
     }
 }
