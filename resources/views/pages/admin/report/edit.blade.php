@@ -1,38 +1,127 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Data Kategori')
+@section('title', 'Edit Data report')
 
 @section('content')
-    <a href="{{ route('admin.report-category.index') }}" class="mb-3 btn btn-danger">Kembali</a>
+    <a href="{{ route('admin.report.index') }}" class="mb-3 btn btn-danger">Kembali</a>
     <div class="mb-4 shadow card">
         <div class="py-3 card-header">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Data</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Edit Data Laporan</h6>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.report-category.update', $category->id) }}" method="POST"
-                enctype="multipart/form-data">
+            <form action="{{ route('admin.report.update', $report->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="name">Nama</label>
-                    <input type="text" class="form-control @error('name') is-invalid
-                    @enderror"
-                        id="name" name="name" value="{{ old('name', $category->name) }}">
-                    @error('name')
+                    <label for="code">Kode</label>
+                    <input type="text" class="form-control @error('code') is-invalid @enderror" id="code"
+                        name="code" value="{{ $report->code }}" disabled>
+
+                    @error('code')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
                 <div class="form-group">
-                    <p>Gambar / Ikon Lama</p>
-                    <img src="{{ asset('storage/' . $category->image) }}" alt="image" width="200">
+                    <label for="resident">Pelapor / Masyarakat</label>
+
+                    <select name="resident_id" class="form-control @error('resident_id') is-invalid @enderror">
+                        @foreach ($residents as $resident)
+                            <option value="{{ $resident->id }}" @if (old('resident_id', $report->resident_id) == $resident->id) selected @endif>
+                                {{ $resident->user->email }} - {{ $resident->user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('resident')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="category">Kategori Laporan</label>
+
+                    <select name="report_category_id"
+                        class="form-control @error('report_category_id') is-invalid @enderror">
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" @if (old('report_category_id', $report->report_category_id) == $category->id) selected @endif>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('report_category_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="title">Judul Laporan</label>
+                    <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
+                        name="title" value="{{ old('title', $report->title) }}">
+
+                    @error('title')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="description">Deskripsi Laporan</label>
+                    <textarea type="text" class="form-control @error('description') is-invalid @enderror" id="description"
+                        name="description" value="{{ old('description', $report->description) }}" rows="5">{{ old('description', $report->description) }}</textarea>
+
+                    @error('description')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="image">Bukti Laporan</label>
                     <br>
-                    <label for="image">Gambar / Ikon</label>
-                    <input type="file" class="form-control @error('image') is-invalid
-                    @enderror"
-                        id="image" name="image">
+                    <img src="{{ asset('storage/' . $report->image) }}" alt="image" width="100">
+
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
+                        name="image" value="{{ old('image') }}">
+
                     @error('image')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="text" class="form-control @error('latitude') is-invalid @enderror" id="latitude"
+                        name="latitude" value="{{ old('latitude', $report->latitude) }}">
+
+                    @error('latitude')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="text" class="form-control @error('longitude') is-invalid @enderror" id="longitude"
+                        name="longitude" value="{{ old('longitude', $report->longitude) }}">
+
+                    @error('longitude')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="address">Alamat Laporan</label>
+                    <textarea type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+                        value="{{ old('address', $report->address) }}" rows="5">{{ old('address', $report->address) }}</textarea>
+
+                    @error('address')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
