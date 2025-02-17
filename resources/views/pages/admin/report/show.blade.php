@@ -60,6 +60,68 @@
             </table>
         </div>
     </div>
+
+    <div class="mb-5 shadow card">
+        <div class="mb-5 shadow card">
+            <div class="py-3 card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Progress Laporan</h6>
+            </div>
+            <div class="card-body">
+                <a href="{{ route('admin.report-status.create', $report->id) }}" class="mb-3 btn btn-primary">Tambah
+                    Progress</a>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Bukti</th>
+                                <th>Status</th>
+                                <th>Deskripsi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($report->reportStatuses as $status)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        @if ($status->image)
+                                            <img src="{{ asset('storage/' . $report->image) }}" alt="image"
+                                                width="100">
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{ $status->status }}
+                                    </td>
+                                    <td>
+                                        {{ $status->description }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.report-status.edit', $report->id) }}"
+                                            class="btn btn-warning">Edit</a>
+
+                                        <a href="{{ route('admin.report-status.show', $report->id) }}"
+                                            class="btn btn-info">Show</a>
+
+                                        <form action="" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="{{ route('admin.report-status.destroy', $report->id) }}"
+                                                class="btn btn-danger" data-confirm-delete="true">Delete</a>
+                                            {{-- <button type="submit" class="btn btn-danger"
+                                                data-confirm-delete="true">Delete</button> --}}
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
